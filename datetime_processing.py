@@ -11,6 +11,14 @@ OUTPUT = './all/train_users_3.csv'
 
 def main(file, output_file):
   df = pd.read_csv(file)
+  df = process_date(df)
+  cols = df.columns.tolist()
+  new_cols = cols[:-3] + cols [-2:] + cols[-3:-2]
+  df = df[new_cols]
+  df.to_csv(output_file, index=False)
+
+
+def process_date(df):
   dates = df['date_account_created']
   daysWeek = []
   daysYear = []
@@ -25,12 +33,7 @@ def main(file, output_file):
   df['dayOfWeek'] = daysWeek
   df['dayOfYear'] = daysYear
 
-  df = df.drop('date_account_created', axis=1).drop('date_first_booking', axis=1).drop('timestamp_first_active', axis=1)
-  cols = df.columns.tolist()
-  new_cols = cols[:-3] + cols [-2:] + cols[-3:-2]
-  df = df[new_cols]
-
-  df.to_csv(output_file, index=False)
+  return df.drop('date_account_created', axis=1).drop('date_first_booking', axis=1).drop('timestamp_first_active', axis=1)
 
 
 def getDateObj(s):
