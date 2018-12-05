@@ -5,7 +5,7 @@ sessions = pd.read_csv('/Users/QuekYufei/Downloads/all/sessions.csv')
 counted = sessions['user_id'].value_counts(sort=False)
 counted.to_csv('/Users/QuekYufei/Downloads/all/sessions_counted.csv')
 
-# In between these lines I added a row to sessions_counted with col names: [id,session_count]
+# I manually added a row to sessions_counted with col names: [id,session_count]
 
 # join the train and session count data
 main = pd.read_csv('/Users/QuekYufei/Downloads/all/train_users_2.csv')
