@@ -1,8 +1,6 @@
 from train_dataset_processing import *
 from datetime_processing import *
 from action_processing import *
-from add_delete_phone import *
-from user_devices import * 
 import pandas as pd
 
 df = pd.read_csv('train_and_count.csv')
