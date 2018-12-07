@@ -16,3 +16,4 @@ maincsv = pd.read_csv('processed_user.csv')
 maincsv = add_phone_delete_phone(maincsv)
 maincsv = user_devices(maincsv)
 
+maincsv.to_csv('processed_user_2.csv',index=False)
