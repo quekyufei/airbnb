@@ -44,7 +44,6 @@ df = processAction(df)
 print("processed action")
 df.session_count = df.session_count.fillna(0)
 df = df.fillna('other')
-df.
 df = df.drop(columns=['id'])
 
 for col in oh.onehotlist:
