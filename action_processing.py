@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 def main(userfile):
     ufile = pd.read_csv(userfile)
-    return processAction(ufile)
+    print(processAction(ufile))
 
 
 def processAction(ufile):
@@ -16,6 +16,8 @@ def processAction(ufile):
     temp3 = temp2.groupby(['user_id']).sum()
     print("agg done")
     new = pd.merge(ufile, temp3, how='left', left_on = 'id', right_on = 'user_id')
+    for action in new[17:]:
+        new[action] = new[action].fillna(0)
     return new
 
 def getUselessActions(actions):
@@ -32,4 +34,4 @@ def getUselessActions(actions):
     return uselessActions
 
 if __name__ == '__main__':
-    main('./all/train_users_2.csv')
+    main('./downloaded_datasets/train_users_2.csv')
