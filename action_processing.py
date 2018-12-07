@@ -1,14 +1,14 @@
 import pandas as pd
 import numpy as np
-def main(userfile, sessionsfile):
+def main(userfile):
     ufile = pd.read_csv(userfile)
-    sfile = pd.read_csv(sessionsfile)
+    print(processAction(ufile))
+
+
+def processAction(ufile):
+    sfile = pd.read_csv('./downloaded_datasets/sessions.csv')
     actions = sfile['action']
     uselessActions = getUselessActions(actions)
-    # sfile.action = np.where(df.action.isin(list_of_actions), ‘other’, df.action)
-    # for i, row in sfile.iterrows():
-    #     if row['action'] in uselessActions:
-    #         sfile.drop(index=i)
     temp = sfile[~sfile.action.isin(uselessActions)][['user_id', 'action']]
     print("removing useless action")
     temp2 = pd.concat([temp[['user_id']], pd.get_dummies(temp[['action']])], axis=1)
@@ -16,9 +16,9 @@ def main(userfile, sessionsfile):
     temp3 = temp2.groupby(['user_id']).sum()
     print("agg done")
     new = pd.merge(ufile, temp3, how='left', left_on = 'id', right_on = 'user_id')
-    print(new)
-    new.to_csv('user_action.csv')
-
+    for action in new[17:]:
+        new[action] = new[action].fillna(0)
+    return new
 
 def getUselessActions(actions):
     actioncount = {}
@@ -34,4 +34,4 @@ def getUselessActions(actions):
     return uselessActions
 
 if __name__ == '__main__':
-    main('train_users_2.csv','sessions.csv')
+    main('./downloaded_datasets/train_users_2.csv')
