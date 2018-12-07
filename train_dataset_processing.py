@@ -44,10 +44,9 @@ def process_first_browser(df):
 def diff_active_create(df):
 	first_active = df.timestamp_first_active
 	account_created = df.date_account_created
-
+	# Create new row
 	df['active-create-difference'] = df.apply(lambda row: parse_date_difference(str(row.date_account_created), str(row.timestamp_first_active)), axis=1)
 	return df
-
 
 def parse_date_difference(create, active):
 	# 2010-06-28
@@ -55,8 +54,34 @@ def parse_date_difference(create, active):
 	# 20090319043255
 	active = datetime.strptime(active, '%Y%m%d%H%M%S')
 	delta = account - active
-	return delta.days
+	return delta.days	
 
+def onehot_gender(df):
+	return pd.get_dummies(df, columns=['gender'],prefix='gender')
+
+def onehot_signup_method(df):
+	return pd.get_dummies(df, columns=['signup_method'],prefix='su_method')
+
+def onehot_language(df):
+	return pd.get_dummies(df, columns=['language'],prefix='lan')
+
+def onehot_aff_chnl(df):
+	return pd.get_dummies(df, columns=['affiliate_channel'],prefix='aff_chn')
+
+def onehot_aff_prov(df):
+	return pd.get_dummies(df, columns=['affiliate_provider'],prefix='aff_prov')
+
+def onehot_1st_aff_trck(df):
+	return pd.get_dummies(df, columns=['first_affiliate_tracked'],prefix='1st_aff_trck')
+
+def onehot_su_app(df):
+	return pd.get_dummies(df, columns=['signup_app'],prefix='su_app')
+
+def onehot_1st_dev(df):
+	return pd.get_dummies(df, columns=['first_device_type'],prefix='1st_dev')
+
+def onehot_1st_brow(df):
+	return pd.get_dummies(df, columns=['first_browser'],prefix='1st_brow')
 
 if __name__ == '__main__':
 	main()
