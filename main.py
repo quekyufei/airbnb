@@ -3,10 +3,24 @@ from adding_total_browse_time import *
 from datetime_processing import *
 from action_processing import *
 from adding_sessions_count import *
+from add_justin_attr import *
+import onehot as oh
 import pandas as pd
+
+def shiftCountryDestination(df):
+  cols = df.columns.tolist()
+  index_country = cols.index('country_destination')
+  new_cols = cols[:index_country] + cols [index_country+1:] + cols[index_country: index_country+1]
+  return df[new_cols]
+
+
 
 df = pd.read_csv('downloaded_datasets/train_users_2.csv')
 df_s = pd.read_csv('downloaded_datasets/sessions.csv')
+df = add_add_delete_phone_attribute(df)
+print('Added deleted phone attributes')
+df = add_user_devices(df)
+print('Added user devices')
 df = addSessionsCount(df, df_s)
 print('Added sessions count')
 df = sumTimeElapsed(df, df_s)
@@ -31,8 +45,11 @@ print("processed action")
 df.session_count = df.session_count.fillna(0)
 df = df.fillna('other')
 df = df.drop(columns=['id'])
-cols = df.columns.tolist()
-index_country = cols.index('country_destination')
-new_cols = cols[:index_country] + cols [index_country+1:] + cols[index_country: index_country+1]
-df = df[new_cols]
-df.to_csv('processed_user.csv', index=False)
+
+for col in oh.onehotlist:
+  df = oh.onehot(df, col)
+  cols = df.columns.tolist()
+
+shiftCountryDestination(df)
+df.to_csv('modified_datasets/processed_user_onehot.csv', index=False)
+
