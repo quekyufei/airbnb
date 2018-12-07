@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+
 def main(userfile, sessionsfile):
     ufile = pd.read_csv(userfile)
     sfile = pd.read_csv(sessionsfile)
