@@ -6,7 +6,7 @@ SESSIONS_DATAFILE = './downloaded_datasets/sessions.csv'
 TRAIN_DATAFILE = './downloaded_datasets/train_users_2.csv'
 OUTPUT_DATAFILE = './modified_datasets/total_browse_time.csv'
 
-def sum_time_elapsed(df_t, df_s, fill_blank_method='median'):
+def sumTimeElapsed(df_t, df_s, fill_blank_method='median'):
   user_total_time = df_s.groupby('user_id', sort=False).agg({'secs_elapsed':'sum'})
   median = 0
   if fill_blank_method == 'median':

@@ -2,7 +2,7 @@ import pandas as pd
 
 def addSessionsCount(df_t, df_s):
   counted = df_s['user_id'].value_counts(sort=False)
-  new = df_t.set_index('id').join(counted).rename(columns={'user_id':'session_count'})
+  new = df_t.join(counted, on='id').rename(columns={'user_id':'session_count'})
   return new
 
 if __name__ == '__main__':
