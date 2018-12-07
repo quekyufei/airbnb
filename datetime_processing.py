@@ -1,13 +1,9 @@
-
 import datetime
 import pandas as pd
 import math
 
 INPUT = './all/train_users_2.csv'
 OUTPUT = './all/train_users_3.csv'
-
-
-
 
 def main(file, output_file):
   df = pd.read_csv(file)
@@ -39,7 +35,7 @@ def process_date(df):
 def getDateObj(s):
   if not isinstance(s, str):
     return None
-  (day, month, year) = [int(x) for x in s.split('/')]
+  (year, month, day) = [int(x) for x in s.split('-')]
   return datetime.date(year, month, day)
 
 
