@@ -16,8 +16,14 @@ def processAction(ufile):
     temp3 = temp2.groupby(['user_id']).sum()
     print("agg done")
     new = pd.merge(ufile, temp3, how='left', left_on = 'id', right_on = 'user_id')
-    for action in new[17:]:
+    cols = new.columns.tolist()
+    col_names = []
+    for col in cols:
+        if col.split('_')[0] == 'action':
+            col_names.append(col)
+    for action in new[col_names]:
         new[action] = new[action].fillna(0)
+    new.to_csv('modified_datasets/action_p.csv')
     return new
 
 def getUselessActions(actions):
