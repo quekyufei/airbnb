@@ -1,9 +1,30 @@
 from train_dataset_processing import *
+from adding_total_browse_time import *
 from datetime_processing import *
 from action_processing import *
+from adding_sessions_count import *
+from add_justin_attr import *
+import onehot as oh
 import pandas as pd
 
-df = pd.read_csv('train_and_count.csv')
+def shiftCountryDestination(df):
+  cols = df.columns.tolist()
+  index_country = cols.index('country_destination')
+  new_cols = cols[:index_country] + cols [index_country+1:] + cols[index_country: index_country+1]
+  return df[new_cols]
+
+
+
+df = pd.read_csv('downloaded_datasets/train_users_2.csv')
+df_s = pd.read_csv('downloaded_datasets/sessions.csv')
+df = add_add_delete_phone_attribute(df)
+print('Added deleted phone attributes')
+df = add_user_devices(df)
+print('Added user devices')
+df = addSessionsCount(df, df_s)
+print('Added sessions count')
+df = sumTimeElapsed(df, df_s)
+print('Added the time spent in total')
 df = simplify_classes(df)
 print("simplified classes")
 df = process_age(df)
@@ -18,9 +39,6 @@ df = diff_active_create(df)
 print("processed active diff")
 df = process_date(df)
 print("processed date")
-cols = df.columns.tolist()
-new_cols = cols[:-3] + cols [-2:] + cols[-3:-2]
-df = df[new_cols]
 print("formatted date")
 df = processAction(df)
 print("processed action")
@@ -28,4 +46,11 @@ df.session_count = df.session_count.fillna(0)
 df = df.fillna('other')
 df.
 df = df.drop(columns=['id'])
-df.to_csv('processed_user.csv', index=False)
+
+for col in oh.onehotlist:
+  df = oh.onehot(df, col)
+  cols = df.columns.tolist()
+
+shiftCountryDestination(df)
+df.to_csv('modified_datasets/processed_user_onehot.csv', index=False)
+
