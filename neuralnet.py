@@ -6,7 +6,7 @@ import pandas as pd
 
 from testing_callback import TestCallback
 
-df = pd.read_csv('one_hotted.csv')
+df = pd.read_csv('modified_datasets/processed_user_onehot.csv')
 
 # splits data set by sampling randomly
 train_data=df.sample(frac=0.8,random_state=200)
@@ -27,7 +27,7 @@ test_labels = keras.utils.to_categorical(test_labels, num_classes=2)
 
 
 model = keras.Sequential()
-model.add(keras.layers.Dense(128, activation=tf.nn.relu, input_dim=132))
+model.add(keras.layers.Dense(128, activation=tf.nn.relu, input_dim=149))
 # model.add(keras.layers.Dropout(0.2))
 model.add(keras.layers.Dense(256, activation=tf.nn.relu))
 model.add(keras.layers.Dropout(0.2))
