@@ -43,13 +43,14 @@ print("formatted date")
 df = processAction(df)
 print("processed action")
 df.session_count = df.session_count.fillna(0)
-df = df.fillna('other')
+df = df.fillna(0)
 df = df.drop(columns=['id'])
 
 for col in oh.onehotlist:
   df = oh.onehot(df, col)
-  cols = df.columns.tolist()
 
-shiftCountryDestination(df)
+df = shiftCountryDestination(df)
+df = df.drop(columns=['user_id_x', 'user_id_y'])
+
 df.to_csv('modified_datasets/processed_user_onehot.csv', index=False)
 
